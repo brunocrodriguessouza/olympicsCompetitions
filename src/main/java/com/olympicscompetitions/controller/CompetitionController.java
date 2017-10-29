@@ -30,16 +30,13 @@ public class CompetitionController {
 	@Autowired
 	private CompetitionService competitionService;
 
-//	 @RequestMapping(method = RequestMethod.GET)
-//	 public Collection<Competition> getAllCompetitions(){
-//	 return competitionService.getAllCompetitions();
-//	 }
-
-	@RequestMapping(method = RequestMethod.GET)
-	public Collection<Competition> getCompetitionByModality(@RequestParam(value = "modality", required=false) String modality,
-			HttpServletRequest req) {
+	 @RequestMapping(method = RequestMethod.GET)
+	 public Collection<Competition> getAllCompetitions(@RequestParam(value = "modality", required=false) String modality){
+		if (modality == null){
+			return competitionService.getAllCompetitions();
+		}
 		return competitionService.getCompetitionByModality(modality);
-	}
+	 }
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public Competition getCompetitionById(@PathVariable("id") int id) {
@@ -55,7 +52,7 @@ public class CompetitionController {
 	public ResponseMessage updateCompetition(@RequestBody Competition competition) {
 	try{
 		Competition competitionUpdated = competitionService.updateCompetition(competition);
-		return new ResponseMessage("Success", "Competition changed successfully");
+		return new ResponseMessage("Success", "Competition changed successfully" + competitionUpdated.getId());
 	} catch (ExceptionTimeConflict e) {
 		return new ResponseMessage("Error", "The same date and time is not allowed for the same location and modality");
 	} catch (ExceptionSameCountry e) {
@@ -68,9 +65,8 @@ public class CompetitionController {
 	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseMessage insertCompetition(@RequestBody Competition competition) {
 		try {
-			Competition competitionObject = competitionService.insertCompetition(competition);
-			return new ResponseMessage("Success", "Competition inserted successfully");
-
+			Competition competitionInserted = competitionService.insertCompetition(competition);
+			return new ResponseMessage("Success", "Competition inserted successfully" + competitionInserted.getId());
 		} catch (ExceptionTimeConflict e) {
 			return new ResponseMessage("Error", "The same date and time is not allowed for the same location and modality");
 		} catch (ExceptionSameCountry e) {
