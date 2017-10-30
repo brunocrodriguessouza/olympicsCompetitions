@@ -1,5 +1,6 @@
 package com.olympicscompetitions.dao;
 
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 
@@ -9,8 +10,8 @@ import javax.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
-import com.olympicscompetitions.Stage;
 import com.olympicscompetitions.entity.Competition;
+import com.olympicscompetitions.entity.Stage;
 import com.olympicscompetitions.util.JPAUtil;
 
 @Repository
@@ -64,6 +65,12 @@ public class CompetitionDaoMysqlImpl implements CompetitionDao {
 
 		return competition;
 	}
+	
+	private void startTransacation() {
+		if (!entityManager.getTransaction().isActive()) {
+			entityManager.getTransaction().begin();
+		}
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -74,10 +81,21 @@ public class CompetitionDaoMysqlImpl implements CompetitionDao {
 				.setParameter("modalityParam", competition.getModality()).getResultList();
 		return listTimeConflict;
 	}
-
-	private void startTransacation() {
-		if (!entityManager.getTransaction().isActive()) {
-			entityManager.getTransaction().begin();
-		}
+	
+	@Override
+	public List<Competition> getAllCompetitionByDayAndLocation(Competition competition){
+		
+		Calendar startDateCalendar = Calendar.getInstance();
+		startDateCalendar.set(competition.getStartDateTime().getTime().getYear(), competition.getStartDateTime().getTime().getMonth(), 29, 00, 00);
+		startDateCalendar.set(Calendar.SECOND, 00);
+		
+		TypedQuery<Competition> createQuery = this.entityManager.createQuery(
+				"select c from Competition c where c.startDateTime >= :startDateParam and c.local = :localParam",
+				Competition.class);
+		List<Competition> listAllCompetitionByDayAndLocation = createQuery
+		.setParameter("startDateParam", startDateCalendar)
+		.setParameter("localParam", competition.getLocal())
+		.getResultList();
+		return listAllCompetitionByDayAndLocation;
 	}
 }

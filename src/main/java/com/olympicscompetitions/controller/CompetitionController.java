@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.olympicscompetitions.entity.Competition;
 import com.olympicscompetitions.exception.ExceptionDurationOfCompetition;
+import com.olympicscompetitions.exception.ExceptionMoreThanFourCompetitionOnTheSameDay;
 import com.olympicscompetitions.exception.ExceptionSameCountry;
 import com.olympicscompetitions.exception.ExceptionTimeConflict;
 import com.olympicscompetitions.messages.ResponseMessage;
@@ -59,6 +60,8 @@ public class CompetitionController {
 		return new ResponseMessage("Error", "Confronted with the same country only is allowed in the semi-finals and finals");
 	} catch (ExceptionDurationOfCompetition e) {
 		return new ResponseMessage("Error", "Duration of a competition must be at least 30 minutes");
+	} catch (ExceptionMoreThanFourCompetitionOnTheSameDay e) {
+		return new ResponseMessage("Error", "It is not allowed to enter more than four competitions on the same day and place");
 	}
 	}
 
@@ -73,6 +76,8 @@ public class CompetitionController {
 			return new ResponseMessage("Error", "Confronted with the same country only is allowed in the semi-finals and finals");
 		} catch (ExceptionDurationOfCompetition e) {
 			return new ResponseMessage("Error", "Duration of a competition must be at least 30 minutes");
+		} catch (ExceptionMoreThanFourCompetitionOnTheSameDay e) {
+			return new ResponseMessage("Error", "It is not allowed to enter more than four competitions on the same day and place");
 		}
 	}
 

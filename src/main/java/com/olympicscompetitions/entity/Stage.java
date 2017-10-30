@@ -1,4 +1,4 @@
-package com.olympicscompetitions;
+package com.olympicscompetitions.entity;
 
 public enum Stage {
 	

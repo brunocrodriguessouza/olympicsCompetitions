@@ -53,6 +53,12 @@ public class CompetitionDaoHsqldbImpl implements CompetitionDao{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public List<Competition> getAllCompetitionByDayAndLocation(Competition competition) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 }

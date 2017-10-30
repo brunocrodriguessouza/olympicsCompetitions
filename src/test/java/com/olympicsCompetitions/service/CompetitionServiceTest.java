@@ -13,10 +13,11 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import com.olympicscompetitions.Stage;
 import com.olympicscompetitions.dao.CompetitionDao;
 import com.olympicscompetitions.entity.Competition;
+import com.olympicscompetitions.entity.Stage;
 import com.olympicscompetitions.exception.ExceptionDurationOfCompetition;
+import com.olympicscompetitions.exception.ExceptionMoreThanFourCompetitionOnTheSameDay;
 import com.olympicscompetitions.exception.ExceptionSameCountry;
 import com.olympicscompetitions.exception.ExceptionTimeConflict;
 import com.olympicscompetitions.service.CompetitionService;
@@ -36,7 +37,7 @@ public class CompetitionServiceTest {
 	}
 	
 	@Test(expected = ExceptionTimeConflict.class)
-	public void insertCompetitionWithTimeConflict() throws ExceptionTimeConflict, ExceptionSameCountry, ExceptionDurationOfCompetition{
+	public void insertCompetitionWithTimeConflict() throws ExceptionTimeConflict, ExceptionSameCountry, ExceptionDurationOfCompetition, ExceptionMoreThanFourCompetitionOnTheSameDay{
 		Calendar startDateCalendar = Calendar.getInstance();
 		startDateCalendar.set(2017, Calendar.OCTOBER, 29, 12, 00);
 		startDateCalendar.set(Calendar.SECOND, 00);
@@ -52,7 +53,7 @@ public class CompetitionServiceTest {
 	}
 	
 	@Test(expected = ExceptionSameCountry.class)
-	public void insertCompetitionWithSameCountryConflict() throws ExceptionTimeConflict, ExceptionSameCountry, ExceptionDurationOfCompetition{
+	public void insertCompetitionWithSameCountryConflict() throws ExceptionTimeConflict, ExceptionSameCountry, ExceptionDurationOfCompetition, ExceptionMoreThanFourCompetitionOnTheSameDay{
 		
 		Competition competition = getCompetitionWithSameCountryConflict();
 		competitionService.insertCompetition(competition);
@@ -63,7 +64,7 @@ public class CompetitionServiceTest {
 	}
 	
 	@Test(expected = ExceptionDurationOfCompetition.class)
-	public void insertCompetitionWithInvalidDurationOfCompetition() throws ExceptionTimeConflict, ExceptionSameCountry, ExceptionDurationOfCompetition{
+	public void insertCompetitionWithInvalidDurationOfCompetition() throws ExceptionTimeConflict, ExceptionSameCountry, ExceptionDurationOfCompetition, ExceptionMoreThanFourCompetitionOnTheSameDay{
 		
 		Competition competition = getCompetitionWithInvalidDurationOfCompetition();
 		competitionService.insertCompetition(competition);
@@ -73,7 +74,7 @@ public class CompetitionServiceTest {
 	}
 	
 	@Test
-	public void insertCompetitionWithSuccess() throws ExceptionTimeConflict, ExceptionSameCountry, ExceptionDurationOfCompetition{
+	public void insertCompetitionWithSuccess() throws ExceptionTimeConflict, ExceptionSameCountry, ExceptionDurationOfCompetition, ExceptionMoreThanFourCompetitionOnTheSameDay{
 		Calendar startDateCalendar = Calendar.getInstance();
 		startDateCalendar.set(2017, Calendar.OCTOBER, 29, 14, 00);
 		startDateCalendar.set(Calendar.SECOND, 00);

@@ -22,4 +22,6 @@ public interface CompetitionDao {
 
 	List<Competition> getTimeConflict(Competition competition);
 
+	List<Competition> getAllCompetitionByDayAndLocation(Competition competition);
+
 }

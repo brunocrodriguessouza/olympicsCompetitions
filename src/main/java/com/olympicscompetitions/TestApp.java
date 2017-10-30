@@ -8,9 +8,11 @@ import javax.persistence.Persistence;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.olympicscompetitions.dao.CompetitionDao;
 import com.olympicscompetitions.dao.CompetitionDaoMysqlImpl;
 import com.olympicscompetitions.entity.Competition;
 import com.olympicscompetitions.entity.Modality;
+import com.olympicscompetitions.entity.Stage;
 
 
 public class TestApp {
@@ -33,20 +35,10 @@ public class TestApp {
 		endDateCalendar.set(Calendar.SECOND, 00);
 		endDateCalendar.set(Calendar.MILLISECOND, 00);
 		
-//		Modality soccer = new Modality("Soccer");
-		
-		
-		
 		Competition competition = new Competition("Soccer","Tokyo", startDateCalendar, endDateCalendar, "Brazil","Germany", Stage.FINAL );
-//		Competition competition = new Competition("Futebol2","Campinas", "29/10/2017 17:00:00", "29/10/2017 19:00:00", "São Paulo","Santos", Stage.FINAL_OF_OCTAVES );
-		
-		em.getTransaction().begin();
-//		em.persist(soccer);
-		
-		em.persist(competition);
+		CompetitionDao dao = new CompetitionDaoMysqlImpl();
+		dao.insertCompetitionToDb(competition);
 
-		em.getTransaction().commit();
-		em.close();
 	}
 
 }

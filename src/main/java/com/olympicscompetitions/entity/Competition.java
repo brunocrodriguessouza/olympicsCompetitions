@@ -8,8 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-import com.olympicscompetitions.Stage;
-
 @Entity
 @Table(name = "competition")
 @NamedQuery(name = "Competition.timeConflict", query = "SELECT c FROM Competition c where c.startDateTime <= :dateParam and c.endDateTime >= :dateParam and c.local = :localParam and c.modality = :modalityParam")
